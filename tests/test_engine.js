@@ -1449,7 +1449,22 @@ test('gradeTargets：一年级 = 一上 + 一下，七上只含七上；写法�
   const g8geo = E.gradeTargets(RGQ, '八下', 'geography');
   assert.strictEqual(g8geo.ids.length, 14);
   assert.ok(g8geo.ids.every((id) => id.startsWith('cng_') && RGQ.byId[id].grade === 8 && RGQ.byId[id].semester === '下'));
+  const g7xGeo = E.gradeTargets(RGQ, '七下', 'geography');
+  assert.strictEqual(g7xGeo.ids.length, 13);
+  assert.ok(g7xGeo.ids.every((id) => id.startsWith('cng_') && RGQ.byId[id].grade === 7 && RGQ.byId[id].semester === '下'));
+  const g8sGeo = E.gradeTargets(RGQ, '八上', 'geography');
+  assert.strictEqual(g8sGeo.ids.length, 15);
+  assert.ok(g8sGeo.ids.every((id) => id.startsWith('cng_') && RGQ.byId[id].grade === 8 && RGQ.byId[id].semester === '上'));
+  const g7yGeo = E.gradeTargets(RGQ, '七年级', 'geography');
+  assert.deepStrictEqual(g7yGeo.volumes, ['七上', '七下']);
+  assert.strictEqual(g7yGeo.ids.length, 30); // 七上 17 + 七下 13
+  assert.deepStrictEqual(sorted(g7yGeo.ids), sorted(g7geo.ids.concat(g7xGeo.ids)));
+  const g8yGeo = E.gradeTargets(RGQ, '八年级', 'geography');
+  assert.deepStrictEqual(g8yGeo.volumes, ['八上', '八下']);
+  assert.strictEqual(g8yGeo.ids.length, 29); // 八上 15 + 八下 14
+  assert.deepStrictEqual(sorted(g8yGeo.ids), sorted(g8sGeo.ids.concat(g8geo.ids)));
   assert.strictEqual(E.gradeTargets(RGQ, '九上', 'geography'), null);
+  assert.strictEqual(E.gradeTargets(RGQ, '九年级', 'geography'), null);
   const g7 = E.gradeTargets(RGQ, '七年级');
   assert.strictEqual(g7.ids.length, formal.filter((t) => t.grade === 7 && String(t.id).startsWith('cnm_')).length);
   assert.ok(g7.ids.every((id) => id.startsWith('cnm_')));
